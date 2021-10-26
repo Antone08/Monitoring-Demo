@@ -18,15 +18,25 @@ app.get('/', (req, res) => {
     rollbar.info('html file served successfully')
 })
 
+app.get('/style', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public/styles.css'))
+})
+
 let students = []
 
 app.post('/api/student', (req,res) => {
     let {name} = req.body
     name = name.trim()
 
+   const index = students.findIndex(studentName => studentName === name)
+
+   if(index === -1 && name !== ''){
     students.push(name)
     rollbar.log('Students added sccessfully', {author: 'Antonio', type: 'manual entry'})
     res.status(200).send(students)
+   }else if ( name === ''){
+       rollbar.error('No name given')
+   }
 })
 
 app.use(rollbar.errorHandler())
