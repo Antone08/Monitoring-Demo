@@ -9,6 +9,7 @@ captureUnhandledRejections: true
 })
 
 const app = express()
+app.use(express.json())
 
 
 
